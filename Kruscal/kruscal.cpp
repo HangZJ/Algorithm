@@ -6,6 +6,8 @@
 #include <vector>
 using namespace std;
 
+#pragma warning(disable:4996)
+
 typedef struct  Edge
 {
 	int u;
@@ -52,6 +54,9 @@ int main() {
 				parent[pv] = pu;
 				tree.push_back(sedge);
 			}
+		}
+		for (vector<Edge>::iterator it = tree.begin(); it != tree.end(); it++) {
+			printf("%d->%d %d", it->u, it->v, it->w);
 		}
 	}
 	return 0;

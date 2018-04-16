@@ -15,10 +15,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="prime.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="prime.cpp">
+    <ClCompile Include="kruscal.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Edmonds_Karp.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
