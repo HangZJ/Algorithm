@@ -24,7 +24,7 @@
     <ClCompile Include="Edmonds_Karp.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="max_flow.cpp">
+    <ClCompile Include="relabel_to_front.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

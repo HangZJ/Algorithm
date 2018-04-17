@@ -25,7 +25,7 @@
     <ClCompile Include="kruscal.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="max_flow.cpp" />
+    <ClCompile Include="relabel_to_front.cpp" />
     <ClCompile Include="prime.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
