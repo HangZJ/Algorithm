@@ -1,64 +1,76 @@
+/*
+http://poj.org/problem?id=1273
+Sample Input
+5 4
+1 2 40
+1 4 20
+2 4 20
+2 3 30
+3 4 10
+
+
+Sample Output
+50
+*/
+
 #include <cstdio>
 #include <cmath>
 #include <algorithm>
-#include <unordered_map>
 #include <queue>
-#include <vector>
 using namespace std;
 
-#pragma warning(disable:4996)
+#define MAXNODE 205
+#define INF 0x7fffffff
 
-#define MAXNODE 1010
-
-typedef struct  Edge
-{
-	int v_to;
-	int capacity;
-	Edge(int a, int b) :v_to(a), capacity(b) {};
-}SEdge;
-
-vector<Edge> Adj[MAXNODE];
-bool vis[MAXNODE] = { false };
+int G[MAXNODE][MAXNODE];
+bool vis[MAXNODE];
 int pre[MAXNODE];
 int u, v, c;
 int n, m;//n边数  m节点数
-int maxflow, prev;
+int maxflow;
 
 bool BFS() {
+	fill(vis, vis + MAXNODE, false);
+	fill(pre, pre + MAXNODE, -1);
 	queue<int> q;
-	q.push(0);
-	while (!q.empty() && !vis[m - 1]) {
+	q.push(1);
+	vis[1] = true;
+	while (!q.empty() && !vis[m]) {
 		int cur = q.front();
 		q.pop();
-		for (int to = 0; to < Adj[cur].size(); to++)
-		{
-			Edge &e = Adj[cur][to];
-			if (!vis[e.v_to] && e.capacity > 0) {
-				vis[e.v_to] = true;
-				pre[e.v_to] = cur;
-				q.push(e.v_to);
+		for (int i = 1; i <= m; i++) {
+			if (!vis[i] && G[cur][i] > 0) {
+				vis[i] = true;
+				pre[i] = cur;
+				q.push(i);
 			}
 		}
 	}
-	return vis[m - 1];
+	return vis[m];
 }
 
 int main() {
-	while (scanf("%d%d", &m, &n)) {
-		fill(pre, pre + MAXNODE, -1);
-		fill(vis, vis + MAXNODE, false);
+	while (scanf("%d%d", &n, &m) != EOF) {
+		fill(G[0], G[0] + MAXNODE * MAXNODE, 0);
 		maxflow = 0;
 		for (int i = 0; i < n; i++) {
 			scanf("%d%d%d", &u, &v, &c);
-			Adj[u].push_back(Edge(v, c));
-			Adj[v].push_back(Edge(u, 0));
+			G[u][v] += c;
 		}
 		while (BFS()) {
-			for (int cur = m - 1; cur != 0; cur = pre[cur]) {
+			int mincap = INF, prev = 0;
+			for (int cur = m; cur != 1; cur = pre[cur]) {
 				prev = pre[cur];
-
+				mincap = min(mincap, G[prev][cur]);
+			}
+			maxflow += mincap;
+			for (int cur = m; cur != 1; cur = pre[cur]) {
+				prev = pre[cur];
+				G[prev][cur] -= mincap;
+				G[cur][prev] += mincap;
 			}
 		}
+		printf("%d\n", maxflow);
 	}
 	return 0;
 }

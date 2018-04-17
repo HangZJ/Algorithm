@@ -1,12 +1,17 @@
+/*
+http://poj.org/problem?id=1287
+Networking
+Time Limit: 1000MS		Memory Limit: 10000K
+Total Submissions: 14766		Accepted: 7788
+*/
+
 #include <cstdio>
 #include <cmath>
 #include <algorithm>
-#include <unordered_map>
+#include <map>
 #include <queue>
 #include <vector>
 using namespace std;
-
-#pragma warning(disable:4996)
 
 typedef struct  Edge
 {
@@ -14,50 +19,50 @@ typedef struct  Edge
 	int v;
 	int w;
 
-	Edge(int a, int b, int c) :u(a), v(b), w(w) {};
+	Edge(int a, int b, int c) :u(a), v(b), w(c) {};
+
+	friend bool operator < (Edge a, Edge b) {
+		return a.w > b.w;
+	}
 }SEdge;
 
-bool operator < (const Edge& a, const Edge& b) {
-	return a.w < b.w;
-}
-
-unordered_map<int, int> parent;
-priority_queue<Edge> edge;
-vector<Edge> tree;
-int P, R, u, v, w;
+map<int, int> parent;
+int P, R, u, v, w, ans;
 
 int FindParent(int i) {
 	if (parent[i] == i) {
 		return i;
 	}
 	parent[i] = FindParent(parent[i]);
-	return parent[i];
+	return FindParent(parent[i]);
 }
 
 int main() {
-	while (scanf("%d%d", &P, &R), P) {
-		for (int i = 0; i < P; i++) {
+	while (scanf("%d", &P), P) {
+		scanf("%d", &R);
+		for (int i = 1; i <= P; i++) {
 			parent[i] = i;
 		}
+		priority_queue<Edge> edge;
+		ans = 0;
 		for (int i = 0; i < R; i++) {
 			scanf("%d%d%d", &u, &v, &w);
 			SEdge sedge(u, v, w);
 			edge.push(sedge);
 		}
-		int pu, pv;
-		while(!edge.empty()) {
+		int pu, pv, ecounter = 0;
+		while (ecounter < P - 1) {
 			SEdge sedge = edge.top();
 			edge.pop();
 			pu = FindParent(sedge.u);
 			pv = FindParent(sedge.v);
 			if (pu != pv) {
 				parent[pv] = pu;
-				tree.push_back(sedge);
+				ans += sedge.w;
+				ecounter++;
 			}
 		}
-		for (vector<Edge>::iterator it = tree.begin(); it != tree.end(); it++) {
-			printf("%d->%d %d", it->u, it->v, it->w);
-		}
+		printf("%d\n", ans);
 	}
 	return 0;
 }
